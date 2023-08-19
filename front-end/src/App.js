@@ -5,6 +5,7 @@ import Login from './Pages/Login';
 import Signup from './Pages/SignUp';
 import AddNotes from './Pages/AddNotes';
 import Navbar from './Components/Navbar';
+import HomePage from './Components/HomePage';
 
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
       <Navbar/>
       {/* <AddNotes/> */}
       {/* <Login/> */}
-      <Signup/>
+      <HomePage/>
+      {/* <Signup/> */}
     </div>
   );
 }
