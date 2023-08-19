@@ -4,7 +4,7 @@ import '../Styles/login.css'
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
+  const [showPassword, setShowPassword] = useState(false);
   const handleLogin = (e) => {
     e.preventDefault();
     // You can implement the login logic here
@@ -24,12 +24,21 @@ const Login = () => {
         </div>
         <div className="input-group">
           <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <div className="password-input">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button
+              type="button"
+              className="toggle-password"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? 'Hide' : 'Show'}
+            </button>
+          </div>
         </div>
         <button type="submit" className="login-button">
           Log In

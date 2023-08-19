@@ -65,6 +65,27 @@ background-image: linear-gradient(0deg, #D9AFD9 0%, #97D9E1 100%);
   .login-button:hover {
     background-color: #0056b3;
   }
+  .password-input {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .toggle-password {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #007bff;
+    outline: none; 
+  }
+  
   @media (max-width: 768px) {
     .login-form {
       padding: 20px;
