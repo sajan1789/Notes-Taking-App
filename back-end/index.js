@@ -4,6 +4,8 @@ const { userRoute}=require("./Routes/users.router")
 const express=require("express")
 const {auth}=require("./MiddleWare/auth.middleware")
 const app=express()
+const cors = require("cors");
+app.use(cors());
 app.use("/users",userRoute)
 app.use("/notes",notesRouter)
 

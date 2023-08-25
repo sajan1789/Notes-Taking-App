@@ -5,13 +5,13 @@ const userRoute = express.Router();
 userRoute.use(express.json());
 const bcrypt = require("bcrypt");
 userRoute.post("/login", async (req, res) => {
-  const { email, pass } = req.body;
-  console.log(email,pass)
+  const { email, password} = req.body;
+  
   try {
     const user = await UserModel.findOne({ email });
     
     if (user) {
-      bcrypt.compare(pass, user.password, (err, result) => {
+      bcrypt.compare(password, user.password, (err, result) => {
         if (result) {
           res.status(200).send({
             msg: "Login Successfull",
@@ -29,19 +29,19 @@ userRoute.post("/login", async (req, res) => {
     res.status(400).send(err);
   }
 });
-userRoute.post("/register", async (req, res) => {
-  const { name, email, pass } = req.body;
-  console.log(name, email, pass);
+userRoute.post("/signup", async (req, res) => {
+  const { name, email, password } = req.body;
+  
   try {
     const user = await UserModel.findOne({ email });
     if (!user) {
-      bcrypt.hash(pass, 3, async (err, hash) => {
+      bcrypt.hash(password, 3, async (err, hash) => {
         const user = new UserModel({ name, email, password: hash });
         await user.save();
         res.status(200).send({ msg: "Registration has been done!" });
       });
     } else {
-      res.status(400).send("This Email is Alreay Registered");
+      res.status(400).send( {msg:"This Email is Alreay Registered"});
     }
   } catch (err) {
     console.log(err);
