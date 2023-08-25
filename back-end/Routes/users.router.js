@@ -1,0 +1,54 @@
+const { UserModel } = require("../Model/usersModel");
+const jwt = require("jsonwebtoken");
+const express = require("express");
+const userRoute = express.Router();
+userRoute.use(express.json());
+const bcrypt = require("bcrypt");
+userRoute.post("/login", async (req, res) => {
+  const { email, pass } = req.body;
+  console.log(email,pass)
+  try {
+    const user = await UserModel.findOne({ email });
+    
+    if (user) {
+      bcrypt.compare(pass, user.password, (err, result) => {
+        if (result) {
+          res.status(200).send({
+            msg: "Login Successfull",
+            token: jwt.sign({"userId":user._id}, "shhhhh"),
+          });
+        } else {
+          res.status(200).send({ "msg": "Wrong Credential" });
+        }
+      });
+    }
+    else{
+        res.status(200).send({ "msg": "Wrong Credential" }); 
+    }
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+userRoute.post("/register", async (req, res) => {
+  const { name, email, pass } = req.body;
+  console.log(name, email, pass);
+  try {
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      bcrypt.hash(pass, 3, async (err, hash) => {
+        const user = new UserModel({ name, email, password: hash });
+        await user.save();
+        res.status(200).send({ msg: "Registration has been done!" });
+      });
+    } else {
+      res.status(400).send("This Email is Alreay Registered");
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
+
+module.exports = {
+  userRoute,
+};
