@@ -1,15 +1,58 @@
 import React, { useState } from 'react';
 import '../Styles/login.css'
 import { Link } from 'react-router-dom';
+import { useToast } from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom';
 const Signup = () => {
+  const navigate=useNavigate()
+  const toast = useToast()
   const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSignup = (e) => {
     e.preventDefault();
-    // You can implement the signup logic here
+    const data={name,email,password}
+    fetch("http://localhost:8080/users/signup",{
+      method:"POST",
+      headers:{
+        "Content-type":"application/json"
+      },
+      body:JSON.stringify(data)
+    }).then(res=>res.json())
+     .then((res)=>{
+      if(res.msg==="This Email is Alreay Registered"){
+        toast({
+          position: 'top',
+          title: 'This Email is Alreay Registered',
+          description: "Please login",
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        })
+      }
+      else{
+        toast({
+          position: 'top',
+          title: 'Account created.',
+          description: "We've created your account for you.",
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
+        })
+    
+          setEmail("")
+          setName("")
+          setPassword("")
+           navigate("/login")
+  
+      }
+     
+     })
+     .catch((err)=>{
+        console.log("error-",err)
+     })
   };
 
   return (
@@ -22,16 +65,16 @@ const Signup = () => {
             type="text"
             id="name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}  required
           />
         </div>
         <div className="input-group">
-          <label htmlFor="username">Email</label>
+          <label htmlFor="email">Email</label>
           <input
             type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)} required
           />
         </div>
         <div className="input-group">
@@ -41,7 +84,7 @@ const Signup = () => {
               type={showPassword ? 'text' : 'password'}
               id="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)} required
             />
             <button
               type="button"

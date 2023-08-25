@@ -1,26 +1,71 @@
 import { useState,useEffect } from 'react'
 import React from 'react'
+import { login } from '../Redux/action'
+import { useSelector,useDispatch} from "react-redux";
 import '../Styles/login.css'
-import { Link } from 'react-router-dom'
+import { useToast } from '@chakra-ui/react'
+import { useNavigate,Link } from 'react-router-dom';
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const dispatch=useDispatch()
+  const navigate=useNavigate()
+  const toast = useToast()
+  const [email, setemail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const handleLogin = (e) => {
     e.preventDefault();
-    // You can implement the login logic here
-  };
+    const data={email,password}
+    fetch("http://localhost:8080/users/login",{
+      method:"POST",
+      headers:{
+        "Content-type":"application/json"
+      },
+      body:JSON.stringify(data)
+    }).then(res=>res.json())
+    .then((res)=>{
+     if(res.msg==="Wrong Credential"){
+       toast({
+         position: 'top',
+         title: "Wrong Credential",
+         description: "Please Enter Correct Credential",
+         status: 'error',
+         duration: 3000,
+         isClosable: true,
+       })
+     }
+     else{
+       toast({
+         position: 'top',
+         title: 'Login Successfull',
+         description: "Welcome to My App",
+         status: 'success',
+         duration: 3000,
+         isClosable: true,
+       })
+        dispatch(login(res.name))
+       setemail("")
+         setPassword("")
+          navigate("/")
+     }
+    
+    })
+    .catch((err)=>{
+       console.log("error-",err)
+    })
+ };
+
+
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleLogin}>
         <h2>Login</h2>
         <div className="input-group">
-          <label htmlFor="username">Email</label>
+          <label htmlFor="email">Email</label>
           <input
             type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            id="email"
+            value={email}
+            onChange={(e) => setemail(e.target.value)}
           />
         </div>
         <div className="input-group">
