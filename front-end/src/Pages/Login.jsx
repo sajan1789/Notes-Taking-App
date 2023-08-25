@@ -1,6 +1,7 @@
 import { useState,useEffect } from 'react'
 import React from 'react'
 import '../Styles/login.css'
+import { Link } from 'react-router-dom'
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -43,6 +44,7 @@ const Login = () => {
         <button type="submit" className="login-button">
           Log In
         </button>
+          <Link to='/signup' className='signup-link'>Create Account</Link>
       </form>
     </div>
   )
