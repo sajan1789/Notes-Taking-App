@@ -3,8 +3,8 @@ const mongoose=require("mongoose")
 //note schema
 const noteSchema=mongoose.Schema({
     title: String,
-    body: String,
-    sub: String,
+    content:String,
+    timestamp:String,
     userId: String
 },{
     versionKey:false

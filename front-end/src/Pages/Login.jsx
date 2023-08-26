@@ -44,6 +44,7 @@ const Login = () => {
        })
         dispatch(login(res.name))
         localStorage.setItem("token",res.token)
+        localStorage.setItem("userName",res.name)
        setemail("")
          setPassword("")
           navigate("/")

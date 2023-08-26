@@ -5,7 +5,7 @@ const AddNotes = () => {
   const toast = useToast()
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [notes, setNotes] = useState([]);
+  
   const handleAddNote = (e) => {
     e.preventDefault();
     const newNote = {
@@ -16,11 +16,13 @@ const AddNotes = () => {
      fetch('http://localhost:8080/notes/add',{
       method:"POST",
       headers:{
-        "Content-type":"application/json"
+        "Content-type":"application/json",
+        "Authorization":`${localStorage.getItem('token')}`
       },
       body:JSON.stringify(newNote)
      }).then(res=>res.json())
      .then((res)=>{
+      console.log(res)
       toast({
         position: 'top',
         title: 'Notes added',
@@ -33,8 +35,6 @@ const AddNotes = () => {
       setTitle('');
      })
      .catch((err)=>console.log(err))
-    
-    // setNotes([...notes, newNote]);
   };
 
   return (
@@ -62,16 +62,6 @@ const AddNotes = () => {
           Add Note
         </button>
       </form>
-
-      <div className="notes-list">
-        {notes.map((note, index) => (
-          <div key={index} className="note">
-            <h3>{note.title}</h3>
-            <p>{note.content}</p>
-            <p className="timestamp">Created on: {note.timestamp}</p>
-          </div>
-        ))}
-      </div>
     </div>
   );
 };
