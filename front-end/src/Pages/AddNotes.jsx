@@ -1,20 +1,40 @@
 import React, { useState } from 'react';
 import '../Styles/AddNotes.css'
+import { useToast } from '@chakra-ui/react'
 const AddNotes = () => {
+  const toast = useToast()
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [notes, setNotes] = useState([]);
-
   const handleAddNote = (e) => {
     e.preventDefault();
     const newNote = {
       title,
       content,
-      timestamp: new Date().toLocaleString() // Get the current timestamp
+      timestamp: new Date().toLocaleString() 
     };
-    setNotes([...notes, newNote]);
-    setTitle('');
-    setContent('');
+     fetch('http://localhost:8080/notes/add',{
+      method:"POST",
+      headers:{
+        "Content-type":"application/json"
+      },
+      body:JSON.stringify(newNote)
+     }).then(res=>res.json())
+     .then((res)=>{
+      toast({
+        position: 'top',
+        title: 'Notes added',
+        description: "Notes has been added Successfull",
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      })
+      setContent('');
+      setTitle('');
+     })
+     .catch((err)=>console.log(err))
+    
+    // setNotes([...notes, newNote]);
   };
 
   return (

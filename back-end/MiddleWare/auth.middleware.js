@@ -15,7 +15,7 @@ const auth=(req,res,next)=>{
       }
     }
     else{
-        res.status(400).send({"msg":"Login First"})
+        res.status(400).send({"msg":"Please Login First"})
     }
 
 }

@@ -43,6 +43,7 @@ const Login = () => {
          isClosable: true,
        })
         dispatch(login(res.name))
+        localStorage.setItem("token",res.token)
        setemail("")
          setPassword("")
           navigate("/")
