@@ -16,11 +16,6 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuDivider,
-  IconButton,
 } from "@chakra-ui/react";
 const Navbar = () => {
   const { user } = useSelector((store) => store.authReducer);
