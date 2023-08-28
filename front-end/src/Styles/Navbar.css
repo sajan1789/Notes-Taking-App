@@ -12,6 +12,7 @@
   
   .navbar-container {
     display: flex;
+  
     justify-content: space-between;
     align-items: center;
     max-width: 1200px;
@@ -26,13 +27,15 @@
   }
   
   .navbar-links {
+    
     list-style: none;
     display: flex;
     margin: 0;
     padding: 0;
   }
-  
+
   .navbar-item {
+
     margin-left: 20px;
   }
   
@@ -45,3 +48,18 @@
   .navbar-link:hover {
     text-decoration: underline;
   }
+
+.navbar-in-mobile-mode{
+  display: none;
+}
+@media (max-width: 768px) {
+  .navbar-links {
+    display: none; 
+  }
+  .navbar-in-mobile-mode{
+    display: block;
+  }
+}
+.navbar-in-mobile-mode{
+
+}

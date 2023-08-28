@@ -4,8 +4,9 @@ import { login } from '../Redux/action'
 import { useSelector,useDispatch} from "react-redux";
 import '../Styles/login.css'
 import { useToast } from '@chakra-ui/react'
-import { useNavigate,Link } from 'react-router-dom';
+import { useNavigate,Link,useLocation } from 'react-router-dom';
 const Login = () => {
+  const location=useLocation()
   const dispatch=useDispatch()
   const navigate=useNavigate()
   const toast = useToast()
@@ -47,7 +48,7 @@ const Login = () => {
         localStorage.setItem("userName",res.name)
        setemail("")
          setPassword("")
-          navigate("/")
+         navigate( location.state ? location.state : "/",{replace:true})
      }
     
     })

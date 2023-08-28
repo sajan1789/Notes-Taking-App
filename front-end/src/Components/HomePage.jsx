@@ -4,7 +4,7 @@ const HomePage = () => {
   return (
     <div className="home-page">
       <header className="hero">
-        <h1>Welcome to My App</h1>
+        <h1>Welcome to My Notes App</h1>
         <p>Your All-in-One Note Taking Solution</p>
       </header>
       <section className="features">
