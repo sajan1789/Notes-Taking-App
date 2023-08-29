@@ -2,19 +2,23 @@ import React from "react";
 import { useState, useEffect } from "react";
 import "../Styles/AddNotes.css";
 import NoNotes from "./NoNotes";
-import { useToast } from "@chakra-ui/react";
+import { useToast ,CircularProgress} from "@chakra-ui/react";
 const Notes = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading2, setIsLoading2] = useState(false);
   const toast=useToast()
   const [notes, setNotes] = useState([]);
   console.log(notes);
   const getNotes = () => {
-    fetch("http://localhost:8080/notes", {
+    setIsLoading(true)
+    fetch("https://worrisome-goat-raincoat.cyclic.app/notes", {
       headers: {
         Authorization: `${localStorage.getItem("token")}`,
       },
     })
       .then((res) => res.json())
       .then((res) => {
+        setIsLoading(false)
         setNotes(res);
       })
       .catch((err) => console.log(err));
@@ -23,7 +27,8 @@ const Notes = () => {
     getNotes();
   }, []);
   const handleDelete = (id) => {
-    fetch(`http://localhost:8080/notes/delete/${id}`, {
+     setIsLoading2(true)
+    fetch(`https://worrisome-goat-raincoat.cyclic.app/notes/delete/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -31,6 +36,7 @@ const Notes = () => {
       },
     }).then((res )=> res.json())
      .then((res)=>{
+      setIsLoading2(false)
       console.log(res)
       getNotes()
       toast({
@@ -46,7 +52,9 @@ const Notes = () => {
       console.log(err)
      })
   };
-
+  if(isLoading){
+    return <div style={{marginTop:"200px"}}><CircularProgress isIndeterminate color="blue.300" /></div>
+  }
   return (
     <div className="notes-container">
       <div className="notes-list">

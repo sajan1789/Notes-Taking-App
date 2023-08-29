@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import '../Styles/login.css'
 import { Link } from 'react-router-dom';
-import { useToast } from '@chakra-ui/react'
+import { useToast ,CircularProgress} from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom';
 const Signup = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const navigate=useNavigate()
   const toast = useToast()
   const [name, setName] = useState('');
@@ -13,8 +14,9 @@ const Signup = () => {
 
   const handleSignup = (e) => {
     e.preventDefault();
+    setIsLoading(true)
     const data={name,email,password}
-    fetch("http://localhost:8080/users/signup",{
+    fetch("https://worrisome-goat-raincoat.cyclic.app/users/signup",{
       method:"POST",
       headers:{
         "Content-type":"application/json"
@@ -22,6 +24,7 @@ const Signup = () => {
       body:JSON.stringify(data)
     }).then(res=>res.json())
      .then((res)=>{
+      setIsLoading(false)
       if(res.msg==="This Email is Alreay Registered"){
         toast({
           position: 'top',
@@ -33,6 +36,7 @@ const Signup = () => {
         })
       }
       else{
+        setIsLoading(false)
         toast({
           position: 'top',
           title: 'Account created.',
@@ -95,9 +99,10 @@ const Signup = () => {
             </button>
           </div>
         </div>
-        <button type="submit" className="login-button">
+       {!isLoading && <button type="submit" className="login-button">
           Sign Up
-        </button>
+        </button>}
+        {isLoading && <CircularProgress isIndeterminate color="blue.300" />}
         <Link to='/login' className='signup-link'>Already Account?</Link>
       </form>
     </div>

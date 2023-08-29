@@ -3,9 +3,10 @@ import React from 'react'
 import { login } from '../Redux/action'
 import { useSelector,useDispatch} from "react-redux";
 import '../Styles/login.css'
-import { useToast } from '@chakra-ui/react'
+import { useToast,CircularProgress} from '@chakra-ui/react'
 import { useNavigate,Link,useLocation } from 'react-router-dom';
 const Login = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const location=useLocation()
   const dispatch=useDispatch()
   const navigate=useNavigate()
@@ -15,8 +16,9 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const handleLogin = (e) => {
     e.preventDefault();
+    setIsLoading(true)
     const data={email,password}
-    fetch("http://localhost:8080/users/login",{
+    fetch("https://worrisome-goat-raincoat.cyclic.app/users/login",{
       method:"POST",
       headers:{
         "Content-type":"application/json"
@@ -24,6 +26,7 @@ const Login = () => {
       body:JSON.stringify(data)
     }).then(res=>res.json())
     .then((res)=>{
+      setIsLoading(false)
      if(res.msg==="Wrong Credential"){
        toast({
          position: 'top',
@@ -35,6 +38,7 @@ const Login = () => {
        })
      }
      else{
+      setIsLoading(true)
        toast({
          position: 'top',
          title: 'Login Successfull',
@@ -89,9 +93,10 @@ const Login = () => {
             </button>
           </div>
         </div>
-        <button type="submit" className="login-button">
+       {!isLoading &&<button type="submit" className="login-button">
           Log In
-        </button>
+        </button>}
+        {isLoading && <CircularProgress isIndeterminate color="blue.300" />}
           <Link to='/signup' className='signup-link'>Create Account</Link>
       </form>
     </div>

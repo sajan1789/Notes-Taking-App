@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import '../Styles/AddNotes.css'
-import { useToast } from '@chakra-ui/react'
+import { useToast,CircularProgress } from '@chakra-ui/react'
 const AddNotes = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const toast = useToast()
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -13,7 +14,9 @@ const AddNotes = () => {
       content,
       timestamp: new Date().toLocaleString() 
     };
-     fetch('http://localhost:8080/notes/add',{
+    setIsLoading(true);
+    
+     fetch('https://worrisome-goat-raincoat.cyclic.app/notes/add',{
       method:"POST",
       headers:{
         "Content-type":"application/json",
@@ -23,6 +26,8 @@ const AddNotes = () => {
      }).then(res=>res.json())
      .then((res)=>{
       console.log(res)
+      setIsLoading(false);
+      
       toast({
         position: 'top',
         title: 'Notes added',
@@ -35,6 +40,7 @@ const AddNotes = () => {
       setTitle('');
      })
      .catch((err)=>console.log(err))
+    
   };
 
   return (
@@ -58,9 +64,10 @@ const AddNotes = () => {
             onChange={(e) => setContent(e.target.value)}
           />
         </div>
-        <button type="submit" className="login-button">
+       {!isLoading &&<button type="submit" className="login-button">
           Add Note
-        </button>
+        </button>}
+        {isLoading && <CircularProgress isIndeterminate color="blue.300" />}
       </form>
     </div>
   );
