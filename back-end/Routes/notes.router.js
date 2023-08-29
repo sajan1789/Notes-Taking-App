@@ -41,9 +41,9 @@ notesRouter.delete("/delete/:id",auth,async(req,res)=>{
       try{
      
        await NoteModel.findByIdAndDelete({_id:id})
-       res.status(200).send(`Notes has been deleted with id ${id}`)
+       res.status(200).send({"msg":"Notes has been deleted "})
      }catch(err){
-       res.status(400).send(err)
+       res.status(400).send({"err":err})
       }
      }
     
